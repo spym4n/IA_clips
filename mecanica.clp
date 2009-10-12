@@ -24,15 +24,6 @@
 	(assert (carro(bateria (read))))
 )
 
-(defrule rule2
-	(carro-liga ?liga)
-	(tipo-problema ?tmp)
-	=> 
-	(if (= ?tmp 1) then
-		(printout  t "-> Carro Falhando" crlf)
-	)
-)
-
 (defrule eletrica "Iniciando Verificacao Eletrica"
 	(carro(bateria ?bat))
 	=>
@@ -47,7 +38,9 @@
 		(printout t "A Vela e Bobina estão boas? " crlf)
 		(assert (carro(vela-bobina (read))))
 	else
-		(printout t "-> A Bateria descarregou nas ultimas semanas?" crlf)
+		(if (eq ?bat no) then
+			(printout t "-> A Bateria descarregou nas ultimas semanas?" crlf)
+		)
 		;(assert (carro(bateria (read))))
 	)
 )
