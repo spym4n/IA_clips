@@ -4,38 +4,50 @@
 	(printout t "####################################" crlf)
 	(printout t "Sistema Especialista - Mecanica v1.0" crlf)
 	(printout t "####################################" crlf crlf)
-	(assert (rule1))
+	(printout t crlf "-> Verificando a natureza do problema envolvido" crlf)
+	(printout t "?- Qual o tipo de problema está tendo com o veículo?" crlf)
+	(printout t "1- Não Liga" crlf)
+	(printout t "2- Superaquecimento" crlf)
+	(printout t "3- Luz do óleo acendendo" crlf)
+	(printout t "4- Carro Falhando" crlf)
+	(printout t "5- Carro Morrendo" crlf)
+	(printout t "6- Problema no freio" crlf)
+	;(printout t crlf "?- O carro está ligando?" crlf)
+	;(bind ?tmp (read))
+	(assert (menu (read)))
 )
 
-(defrule rule1
+(defrule naoLiga
+	(menu 1)
 	=>
-	(printout t crlf "?- O carro está ligando?" crlf)
-	(bind ?tmp (read))
-	(assert (carro-liga ?tmp))
+	(printout t "-> Qual o estado da bateria? " crlf)
+	(assert (carro(bateria (read))))
 )
 
 (defrule rule2
-	(carro-liga ?tmp)
-	=>
-	(if (eq ?tmp sim) then
-		(printout t crlf "-> Verificando a natureza do problema envolvido" crlf)
-		(printout t "?- Qual o tipo de problema está tendo com o veículo?" crlf)
-		(printout t "1- carro falhando" crlf)
-		(printout t "2- carro morrendo" crlf)
-		(printout t "3- freios" crlf)
-		(printout t "4- suspensão" crlf)
-        	(bind ?tmp (read))
-		(assert (tipo-problema ?tmp))
-	else
-		(printout t "-> Verificar as luzes do painel" crlf)
+	(carro-liga ?liga)
+	(tipo-problema ?tmp)
+	=> 
+	(if (= ?tmp 1) then
+		(printout  t "-> Carro Falhando" crlf)
 	)
 )
 
-(defrule rule3
-	(carro-liga ?tmp)
-	(tipo-problema ?tmp)
-	=> 
-	(if (eq ?tmp 1) then
-		(printout  t "-> Carro Falhando" crlf)
+(defrule eletrica "Iniciando Verificacao Eletrica"
+	(carro(bateria ?bat))
+	=>
+	(printout t "A bateria esta atualmente -> " ?bat crlf)
+)
+
+(defrule checkBateria
+	(carro(bateria ?bat))
+	=>
+	(if (eq ?bat yes) then
+		(printout t "-> Verificar a Vela e Bobina" crlf)
+		(printout t "A Vela e Bobina estão boas? " crlf)
+		(assert (carro(vela-bobina (read))))
+	else
+		(printout t "-> A Bateria descarregou nas ultimas semanas?" crlf)
+		;(assert (carro(bateria (read))))
 	)
 )
