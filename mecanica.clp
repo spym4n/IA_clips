@@ -21,7 +21,7 @@
 )
 
 (defrule liga
-	(menu 1)
+	(menu 2)
 	=>
 	(printout t "-> Verificar luzes no painel." crlf)
 	(printout t "?- Qual luz está acendendo?" crlf)
@@ -33,57 +33,40 @@
 )
 
 (defrule luzTemperatura
-        (carro(luz ?luz))
+        (carro(luz 1))
         =>
-	(if (eq ?luz 1) then
-        	(printout t "-> É necessário verificar a origem do superaquecimento." crlf)
-        	(printout t "-> Verificar água no reservatório." crlf)
-        	(printout t "?- Nível de água no reservatório está normal?" crlf)
-        	(printout t "1- Sim" crlf)
-        	(printout t "2- Não" crlf)
-        	(assert (carro(agua-reservatorio (read)))))
+       	(printout t "-> É necessário verificar a origem do superaquecimento." crlf)
+       	(printout t "-> Verificar água no reservatório." crlf)
+       	(printout t "?- Nível de água no reservatório está normal?" crlf)
+       	(printout t "1- Sim" crlf)
+       	(printout t "2- Não" crlf)
+       	(assert (carro(agua-reservatorio (read))))
 	
 )
 
 (defrule luzOleo
-        (carro(luz ?luz))
+        (carro(luz 2))
         =>
-        (if (eq ?luz 2) then
-                (printout t "-> Verificar luzes no painel." crlf)
-                (printout t "?- Qual luz está acendendo?" crlf)
-                (printout t "1- Luz do painel" crlf)
-                (printout t "2- Luz do óleo" crlf)
-                (printout t "3- Luz do combustível" crlf)
-                (printout t "4- Nenhuma luz acente" crlf)
-                (assert (carro(bateria (read)))))
-
+        (printout t "-> Verificar o estado do óleo." crlf)
+        (printout t "?- Como está o óleo? (baixo, normal, velho)" crlf)
+        (assert (carro(oleo (read))))
 )
 
 (defrule luzCombustivel
-        (carro(luz ?luz))
+        (carro(luz 3))
         =>
-        (if (eq ?luz 3) then
-                (printout t "-> Verificar luzes no painel." crlf)
-                (printout t "?- Qual luz está acendendo?" crlf)
-                (printout t "1- Luz do painel" crlf)
-                (printout t "2- Luz do óleo" crlf)
-                (printout t "3- Luz do combustível" crlf)
-                (printout t "4- Nenhuma luz acente" crlf)
-                (assert (carro(bateria (read)))))
-
+        (printout t ">> Colocar combustível no tanque." crlf)
 )
 
 (defrule nenhumaLuz
-        (carro(luz ?luz))
+        (carro(luz 4))
         =>
-        (if (eq ?luz 4) then
-                (printout t "-> Verificar Parte Elétrica." crlf)
-		(printout t "-> Verificar se a bateria está com carga e regulada, utilizando um múltimetro." crlf)
-                (printout t "?- A bateria apresenta problemas?" crlf)
-                (printout t "1- Sim" crlf)
-                (printout t "2- Não" crlf)
-		(assert (carro(bateria (read)))))
-
+        (printout t "-> Verificar Parte Elétrica." crlf)
+	(printout t "-> Verificar se a bateria está com carga e regulada, utilizando um múltimetro." crlf)
+        (printout t "?- A bateria apresenta problemas?" crlf)
+        (printout t "1- Sim" crlf)
+        (printout t "2- Não" crlf)
+	(assert (carro(bateria (read))))
 )
 
 (defrule problemaBateria
@@ -292,19 +275,101 @@
 )
 
 (defrule mangueiraAgua
-        (carro(agua-reservatorio ?agua))
+        (carro(mangueira-agua ?agua))
         =>
         (if (eq ?agua 1) then
-                (printout t "-> Verificar vazamento nas mangueiras." crlf)
-                (printout t "?- Há vazamento na mangueira de água?" crlf)
-              	(printout t "1- Sim" crlf)
-                (printout t "2- Não" crlf) 
-                (assert (carro(mangueira-agua (read))))
+        	(printout t "-> Trocar as mangueiras danificadas. " crlf)
          else
                 (if (eq ?agua 2) then
-                        (printout t "-> Completar água no reservatório. " crlf)
+                	(printout t "-> Verificar termostato." crlf)
+	                (printout t "?- Ventoinha está ligando?" crlf)
+	              	(printout t "1- Sim" crlf)
+	                (printout t "2- Não" crlf) 
+        	        (assert (carro(ventoinha (read))))
                 )
 	)
+)
+
+(defrule ventoinha
+        (carro(ventoinha ?vento))
+        =>
+        (if (eq ?vento 1) then
+                (printout t "-> Verificar bomba de água." crlf)
+                (printout t "?- Bomba de água está funcionando?" crlf)
+              	(printout t "1- Sim" crlf)
+                (printout t "2- Não" crlf) 
+                (assert (carro(bomba-agua (read))))
+         else
+                (if (eq ?vento 2) then
+                        (printout t "-> Trocar termostato. " crlf)
+                )
+	)
+)
+
+(defrule verificaBomba-agua
+        (carro(bomba-agua ?bomba))
+        =>
+        (if (eq ?bomba 1) then
+                (printout t "-> Verificar se está entrando água no motor." crlf)
+                (printout t "?- Textura do óleo está clara e fina?" crlf)
+              	(printout t "1- Sim" crlf)
+                (printout t "2- Não" crlf) 
+                (assert (carro(textura-oleo (read))))
+         else
+                (if (eq ?bomba 2) then
+                        (printout t ">> Trocar bomba de água. " crlf)
+                )
+	)
+)
+
+(defrule verificaTextura-oleo
+        (carro(textura-oleo ?txtOleo))
+        =>
+        (if (eq ?txtOleo 1) then
+        	(printout t "-- Verificar juntas do motor. " crlf)
+         else
+                (if (eq ?txtOleo 2) then
+                	(printout t "-> Verificar bomba de óleo." crlf)
+	                (printout t "?- Bomba de óleo está funcionando?" crlf)
+	              	(printout t "1- Sim" crlf)
+	                (printout t "2- Não" crlf) 
+        	        (assert (carro(bomba-oleo (read))))
+                )
+	)
+)
+
+(defrule verificaBomba-oleo
+        (carro(bomba-oleo ?Oleo))
+        =>
+        (if (eq ?Oleo 1) then
+        	(printout t "-- Abrir parte de baixo do motor. " crlf)
+         else
+                (if (eq ?Oleo 2) then
+                	(printout t ">> Trocar Bomba de óleo." crlf)
+                )
+	)
+)
+
+(defrule oleoBaixo
+        (carro(oleo baixo))
+        =>
+       	(printout t ">> Completar o óleo. " crlf)
+)
+
+(defrule oleoVelho
+        (carro(oleo velho))
+        =>
+       	(printout t ">> Trocar o óleo. " crlf)
+)
+
+(defrule oleoNormal
+        (carro(oleo normal))
+        =>
+        (printout t "-> Verificar se está entrando água no motor." crlf)
+        (printout t "?- Textura do óleo está clara e fina?" crlf)
+        (printout t "1- Sim" crlf)
+        (printout t "2- Não" crlf) 
+        (assert (carro(textura-oleo (read))))
 )
 
 (defrule naoLiga
