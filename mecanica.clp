@@ -373,6 +373,143 @@
         (assert (carro(naoliga (read))))
 )
 
+(defrule vFalhando
+        (carro(naoliga 1))
+        =>
+       	(printout t "-> Verificar se tem combustível. " crlf)
+        (printout t "?- Tem combustível?" crlf)
+        (printout t "1- Sim" crlf)
+        (printout t "2- Não" crlf)
+        (assert (carro(combustivel (read))))
+)
+
+(defrule verificaCombustivel
+        (carro(combustivel ?comb))
+        =>
+        (if (eq ?comb 1) then
+                (printout t "-> Verificar se o combustível é o adequado." crlf)
+                (printout t "?- É o combustível adequado?" crlf)
+                (printout t "1- Sim" crlf)
+                (printout t "2- Não" crlf)
+                (assert (carro(combustivel-certo (read))))
+         else
+                (if (eq ?comb 2) then
+                        (printout t ">> Colocar Combustível." crlf)
+                )
+        )
+)
+
+(defrule verificaCombustivelCorreto
+        (carro(combustivel-certo ?comb))
+        =>
+        (if (eq ?comb 1) then
+                (printout t "-> Verificar velas e cabos da vela." crlf)
+                (printout t "?- Está normal?" crlf)
+                (printout t "1- Sim" crlf)
+                (printout t "2- Não" crlf)
+                (assert (carro(velas-cabos (read))))
+         else
+                (if (eq ?comb 2) then
+                        (printout t ">> Esvaziar o tanque, limpar e colocar o combustível correto." crlf)
+                )
+        )
+)
+
+(defrule verificaVelasCabos
+        (carro(velas-cabos ?velaCabo))
+        =>
+        (if (eq ?velaCabo 1) then
+                (printout t "-> Verificar bobina." crlf)
+                (printout t "?- Está normal?" crlf)
+                (printout t "1- Sim" crlf)
+                (printout t "2- Não" crlf)
+                (assert (carro(bobina (read))))
+         else
+                (if (eq ?velaCabo 2) then
+                        (printout t ">> Trocar velas e/ou cabos de velas." crlf)
+                )
+        )
+)
+
+(defrule verificaBobina
+        (carro(bobina ?bob))
+        =>
+        (if (eq ?bob 1) then
+                (printout t "-> Verificar tipo de motor." crlf)
+                (printout t "?- Qual o tipo de motor?" crlf)
+                (printout t "1- Carburado" crlf)
+                (printout t "2- Injetado" crlf)
+                (assert (carro(falhandoTipoMotor (read))))
+         else
+                (if (eq ?bob 2) then
+                        (printout t ">> Trocar bobina." crlf)
+                )
+        )
+)
+
+(defrule verificaFTipoMotor
+        (carro(falhandoTipoMotor ?fTipoM))
+        =>
+        (if (eq ?fTipoM 1) then
+                (printout t "-> Verificar platinado." crlf)
+                (printout t "?- Está normal?" crlf)
+                (printout t "1- Sim" crlf)
+                (printout t "2- Não" crlf)
+                (assert (carro(platinado (read))))
+         else
+                (if (eq ?fTipoM 2) then
+                	(printout t "-> Efetua o reset no módulo de injeção." crlf)
+	                (printout t "?- O módulo funcionou após o reset?" crlf)
+        	        (printout t "1- Sim" crlf)
+                	(printout t "2- Não" crlf)
+	                (assert (carro(modulo (read))))
+                )
+        )
+)
+
+(defrule verificaPlatinado
+        (carro(platinado ?plat))
+        =>
+        (if (eq ?plat 1) then
+                (printout t "-> Verificar carburador." crlf)
+                (printout t "?- Está sujo?" crlf)
+                (printout t "1- Sim" crlf)
+                (printout t "2- Não" crlf)
+                (assert (carro(fCarburador (read))))
+         else
+                (if (eq ?plat 2) then
+                        (printout t ">> Trocar platinado." crlf)
+                )
+        )
+)
+
+(defrule verificaFCarburador
+        (carro(fCarburador ?fcarb))
+        =>
+        (if (eq ?fcarb 1) then
+                        (printout t ">> Limpar o carburador." crlf)
+         else
+                (if (eq ?fcarb 2) then
+                	(printout t "-> Verifica excesso de combustível." crlf)
+	                (printout t "?- Está normal?" crlf)
+        	        (printout t "1- Sim" crlf)
+	               	(printout t "2- Não" crlf)
+        	        (assert (carro(excessoCombustivel (read))))
+                )
+        )
+)
+
+(defrule verificaExcessoCombustivel
+        (carro(excessoCombustivel ?excComb))
+        =>
+        (if (eq ?excComb 1) then
+                        (printout t ">> É necessário abrir o motor para maiores detalhes." crlf)
+         else
+                (if (eq ?excComb 2) then
+                	(printout t ">> Regula o carburador." crlf)
+                )
+        )
+)
 
 (defrule fluido
         (carro(naoliga 3))
