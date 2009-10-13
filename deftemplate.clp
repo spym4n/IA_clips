@@ -16,6 +16,7 @@
 	(slot mangueira-agua (type SYMBOL))
 	(slot ventoinha (type SYMBOL))
 	(slot bomba-agua (type SYMBOL))
+	(slot tmotor (type SYMBOL))
 	(slot textura-oleo (type SYMBOL))
 	(slot bomba-oleo (type SYMBOL))
 	(slot oleo (type SYMBOL))

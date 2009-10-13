@@ -374,6 +374,7 @@
 )
 
 
+
 (defrule fluido
         (carro(naoliga 3))
         =>
@@ -476,3 +477,24 @@
         )
 )
 
+(defrule tmotor
+        (carro(naoliga 2))
+        =>
+        (printout t "-> Verificar o tipo do motor. " crlf)
+	(printout t "?- Qual é o tipo de injeção de comubustível?" crlf)
+        (printout t "1- Injeção Eletrônica" crlf)
+        (printout t "2- Carburador" crlf)
+        (assert (carro(tmotor (read))))
+)
+
+(defrule ajusteMotor
+        (carro(tmotor ?mott))
+        =>
+        (if (eq ?mott 1) then
+                (printout t "-> Ajustar o regulador de marcha lenta (usando o computador)." crlf)
+         else
+                (if (eq ?mott 2) then
+                        (printout t "-> Regular o carburador. " crlf)
+                )
+        )
+)
