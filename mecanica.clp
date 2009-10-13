@@ -25,24 +25,23 @@
 	=>
 	(printout t "-> Verificar luzes no painel." crlf)
 	(printout t "?- Qual luz está acendendo?" crlf)
-	(printout t "1- Luz do painel" crlf)
+	(printout t "1- Luz da temperatura" crlf)
 	(printout t "2- Luz do óleo" crlf)
 	(printout t "3- Luz do combustível" crlf)
 	(printout t "4- Nenhuma luz acende" crlf)
 	(assert (carro(luz (read))))
 )
 
-(defrule luzPainel
+(defrule luzTemperatura
         (carro(luz ?luz))
         =>
 	(if (eq ?luz 1) then
-        	(printout t "-> Verificar luzes no painel." crlf)
-        	(printout t "?- Qual luz está acendendo?" crlf)
-        	(printout t "1- Luz do painel" crlf)
-        	(printout t "2- Luz do óleo" crlf)
-        	(printout t "3- Luz do combustível" crlf)
-        	(printout t "4- Nenhuma luz acente" crlf)
-        	(assert (carro(bateria (read)))))
+        	(printout t "-> É necessário verificar a origem do superaquecimento." crlf)
+        	(printout t "-> Verificar água no reservatório." crlf)
+        	(printout t "?- Nível de água no reservatório está normal?" crlf)
+        	(printout t "1- Sim" crlf)
+        	(printout t "2- Não" crlf)
+        	(assert (carro(agua-reservatorio (read)))))
 	
 )
 
@@ -130,6 +129,39 @@
 	 else
                 (if (eq ?cbat 2) then
                         (printout t "-> Problema resolvido. " crlf)
+                )
+	)
+)
+
+
+(defrule aguaReservatorio
+        (carro(agua-reservatorio ?agua))
+        =>
+        (if (eq ?agua 1) then
+                (printout t "-> Verificar vazamento nas mangueiras." crlf)
+                (printout t "?- Há vazamento na mangueira de água?" crlf)
+              	(printout t "1- Sim" crlf)
+                (printout t "2- Não" crlf) 
+                (assert (carro(mangueira-agua (read))))
+         else
+                (if (eq ?agua 2) then
+                        (printout t "-> Completar água no reservatório. " crlf)
+                )
+	)
+)
+
+(defrule mangueiraAgua
+        (carro(agua-reservatorio ?agua))
+        =>
+        (if (eq ?agua 1) then
+                (printout t "-> Verificar vazamento nas mangueiras." crlf)
+                (printout t "?- Há vazamento na mangueira de água?" crlf)
+              	(printout t "1- Sim" crlf)
+                (printout t "2- Não" crlf) 
+                (assert (carro(mangueira-agua (read))))
+         else
+                (if (eq ?agua 2) then
+                        (printout t "-> Completar água no reservatório. " crlf)
                 )
 	)
 )

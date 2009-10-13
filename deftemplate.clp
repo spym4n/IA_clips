@@ -5,4 +5,6 @@
         (slot contbateria (type SYMBOL))
 	(slot alternador (type SYMBOL))
 	(slot vela-bobina (type SYMBOL))
+	(slot agua-reservatorio (type SYMBOL))
+	(slot mangueira-agua (type SYMBOL))
 )
