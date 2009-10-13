@@ -7,20 +7,10 @@
 	(printout t "?- O veículo funciona ao acionar a ignição?" crlf)
 	(printout t "1- Sim" crlf)
 	(printout t "2- Não" crlf)
-
-	;(printout t crlf "-> Verificando a natureza do problema envolvido" crlf)
-	;(printout t "?- Qual o tipo de problema está tendo com o veículo?" crlf)
-	;(printout t "2- Superaquecimento" crlf)
-	;(printout t "3- Luz do óleo acendendo" crlf)
-	;(printout t "4- Carro Falhando" crlf)
-	;(printout t "5- Carro Morrendo" crlf)
-	;(printout t "6- Problema no freio" crlf)
-	;(printout t crlf "?- O carro está ligando?" crlf)
-	;(bind ?tmp (read))
 	(assert (menu (read)))
 )
 
-(defrule liga
+(defrule naoliga
 	(menu 2)
 	=>
 	(printout t "-> Verificar luzes no painel." crlf)
@@ -372,12 +362,117 @@
         (assert (carro(textura-oleo (read))))
 )
 
-(defrule naoLiga
-        (menu 2)
+(defrule Liga
+        (menu 1)
         =>
-        (printout t "-> Qual o estado da bateria? " crlf)
-        ;(assert (carro(bateria (read))))
+        (printout t "-> Verificar o tipo do problema.  " crlf)
+        (printout t "?- Qual o tipo do problema?" crlf)
+        (printout t "1- Veículo Falhando" crlf)
+        (printout t "2- Veículo Morrendo" crlf)
+        (printout t "3- Problema nos freios" crlf)
+        (assert (carro(naoliga (read))))
 )
 
 
+(defrule fluido
+        (carro(naoliga 3))
+        =>
+       	(printout t "-> Verificar o fluido de freio. " crlf)
+        (printout t "?- O nível de fluido está normal?" crlf)
+        (printout t "1- Sim" crlf)
+        (printout t "2- Não" crlf)
+        (assert (carro(fluido (read))))
+)
+
+(defrule verificaPastilha
+        (carro(fluido ?flu))
+        =>
+        (if (eq ?flu 1) then
+                (printout t "-> Verificar pastilhas de freio." crlf)
+                (printout t "?- As pastilhas estão gastas?" crlf)
+                (printout t "1- Sim" crlf)
+                (printout t "2- Não" crlf)
+                (assert (carro(pastilha (read))))
+         else
+                (if (eq ?flu 2) then
+                        (printout t "-> Completa o nível de fluido do freio. " crlf)
+                )
+        )
+)
+
+(defrule pastilha
+        (carro(pastilha ?pas))
+        =>
+        (if (eq ?pas 1) then
+        	(printout t "-> Trocar as pastilhas de freio. " crlf) 
+	else
+                (if (eq ?pas 2) then
+   	                (printout t "-> Verificar lonas de freio." crlf)
+        	        (printout t "?- As lonas estão gastas?" crlf)
+               		(printout t "1- Sim" crlf)
+               		(printout t "2- Não" crlf)
+                	(assert (carro(lona (read))))
+                )
+        )
+)
+
+(defrule lona
+        (carro(lona ?lon))
+        =>
+        (if (eq ?lon 1) then
+                (printout t "-> Trocar as lonas de freio. " crlf)       
+        else
+                (if (eq ?lon 2) then
+                        (printout t "-> Verificar discos de freio." crlf)
+                        (printout t "?- Os discos estão gastos?" crlf)
+                        (printout t "1- Sim" crlf)
+                        (printout t "2- Não" crlf)
+                        (assert (carro(disco (read))))
+                )
+        )
+)
+
+(defrule disco
+        (carro(disco ?disc))
+        =>
+        (if (eq ?disc 1) then
+                (printout t "-> Trocar os discos de freio. " crlf)    
+        else
+                (if (eq ?disc 2) then
+                        (printout t "-> Verificar cilindro de roda e cilindro mestre." crlf)
+                        (printout t "?- Os cilindros estão normais?" crlf)
+                        (printout t "1- Sim" crlf)
+                        (printout t "2- Não" crlf)
+                        (assert (carro(cilindro (read))))
+                )
+        )
+)
+
+(defrule cilindro
+        (carro(cilindro ?cil))
+        =>
+        (if (eq ?cil 1) then
+                (printout t "-> Verificar hidrovácuo." crlf)
+                (printout t "?- O hidrovácuo está funcionando?" crlf)
+                (printout t "1- Sim" crlf)
+                (printout t "2- Não" crlf)
+                (assert (carro(hidrovacuo (read))))
+         else
+                (if (eq ?cil 2) then
+                        (printout t "-> Troca os cilindros de roda e cilindro mestre. " crlf)
+                )
+        )
+)
+
+(defrule hidrovacuo
+        (carro(hidrovacuo ?hid))
+        =>
+        (if (eq ?hid 1) then
+                (printout t "-> Verificar mais a fundo o problema." crlf)
+         else
+                (if (eq ?hid 2) then
+                        (printout t "-> Conserta o hidrovácuo. " crlf)
+                )
+        )
+)
 
