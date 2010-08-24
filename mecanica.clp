@@ -38,7 +38,7 @@
         (carro(luz 2))
         =>
         (printout t "-> Verificar o estado do óleo." crlf)
-        (printout t "?- Como está o óleo? (baixo, normal)" crlf)
+        (printout t "?- Como está o óleo? (baixo, normal, velho)" crlf)
         (assert (carro(oleo (read))))
 )
 
@@ -510,7 +510,6 @@
                 )
         )
 )
-
 
 (defrule fluido
         (carro(naoliga 3))
