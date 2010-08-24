@@ -511,6 +511,7 @@
         )
 )
 
+
 (defrule fluido
         (carro(naoliga 3))
         =>
