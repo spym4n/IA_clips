@@ -70,11 +70,11 @@
 		(assert (carro(tipobateria (read))))
 	 else
                 (if (eq ?bat 2) then
-                        (printout t "-> Verificar porque a bateria está descarregando. " crlf)
-                	(printout t "?- O alternador está conseguindo carregar a bateria?" crlf)
-			(printout t "1- Sim" crlf)
-			(printout t "2- Não" crlf)
-			(assert (carro(alternador (read))))
+                	(printout t "-> Verificar funcionamento do painel." crlf)
+	                (printout t "?- O Painel está funcionando?" crlf)
+        	        (printout t "1- Sim" crlf)
+                	(printout t "2- Não" crlf)
+			(assert (carro(painel (read))))
 		)
         )
 )
@@ -90,7 +90,11 @@
                 (assert (carro(contbateria (read))))
          else
                 (if (eq ?tbat 2) then
-                        (printout t "-> Trocar a bateria. " crlf)
+                        (printout t "-> Efetuar recarga na bateria. " crlf)
+                	(printout t "?- A bateria continua com problema?" crlf)
+	              	(printout t "1- Sim" crlf)
+        	        (printout t "2- Não" crlf) 
+                	(assert (carro(contbateria (read))))
                 )
 	)
 )
@@ -104,6 +108,23 @@
                 (if (eq ?cbat 2) then
                         (printout t "-> Problema resolvido. " crlf)
                 )
+	)
+)
+
+(defrule painel
+	(carro(painel ?fPainel))
+	=>
+	(if (eq ?fPainel 1) then
+        ;                (printout t "-> Verificar porque a bateria está descarregando. " crlf)
+			(printout t "-> Verificar alternador." crlf)
+                	(printout t "?- O alternador está conseguindo carregar a bateria?" crlf)
+			(printout t "1- Sim" crlf)
+			(printout t "2- Não" crlf)
+			(assert (carro(alternador (read))))
+	else
+		(if (eq ?fPainel 2) then
+                        (printout t "-> Consertar Painel. " crlf)
+		)
 	)
 )
 
@@ -252,14 +273,18 @@
         (carro(agua-reservatorio ?agua))
         =>
         (if (eq ?agua 1) then
-                (printout t "-> Verificar vazamento nas mangueiras." crlf)
-                (printout t "?- Há vazamento na mangueira de água?" crlf)
-              	(printout t "1- Sim" crlf)
-                (printout t "2- Não" crlf) 
-                (assert (carro(mangueira-agua (read))))
+                	(printout t "-> Verificar termostato." crlf)
+	                (printout t "?- Eletroventilador está ligando?" crlf)
+	              	(printout t "1- Sim" crlf)
+	                (printout t "2- Não" crlf) 
+        	        (assert (carro(ventoinha (read))))
          else
                 (if (eq ?agua 2) then
-                        (printout t "-> Completar água no reservatório. " crlf)
+	                (printout t "-> Verificar vazamento nas mangueiras." crlf)
+        	        (printout t "?- Há vazamento na mangueira de água?" crlf)
+              		(printout t "1- Sim" crlf)
+	                (printout t "2- Não" crlf) 
+        	        (assert (carro(mangueira-agua (read))))
                 )
 	)
 )
@@ -271,11 +296,7 @@
         	(printout t "-> Trocar as mangueiras danificadas. " crlf)
          else
                 (if (eq ?agua 2) then
-                	(printout t "-> Verificar termostato." crlf)
-	                (printout t "?- Ventoinha está ligando?" crlf)
-	              	(printout t "1- Sim" crlf)
-	                (printout t "2- Não" crlf) 
-        	        (assert (carro(ventoinha (read))))
+                        (printout t "-> Completar água no reservatório. " crlf)
                 )
 	)
 )

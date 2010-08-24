@@ -1,8 +1,10 @@
 (deftemplate carro
+	(slot naoliga (type INTEGER))
 	(slot luz (type INTEGER))
 	(slot bateria (type SYMBOL))
         (slot tipobateria (type SYMBOL))
         (slot contbateria (type SYMBOL))
+	(slot painel (type SYMBOL))
 	(slot alternador (type SYMBOL))
 	(slot correia (type SYMBOL))
 	(slot componente (type SYMBOL))
@@ -20,7 +22,6 @@
 	(slot textura-oleo (type SYMBOL))
 	(slot bomba-oleo (type SYMBOL))
 	(slot oleo (type SYMBOL))
-	(slot naoliga (type INTEGER))
 	(slot fluido (type SYMBOL))
 	(slot pastilha (type SYMBOL))
 	(slot lona (type SYMBOL))
